@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifpr.treinamento.aplicacao.ui.gui.jfx.CursoController">
+   <children>
+      <GridPane layoutX="-121.0" layoutY="-92.0" prefHeight="350.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+          <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+            <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+            <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <ImageView fitHeight="96.0" fitWidth="96.0" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" pickOnBounds="true" preserveRatio="true" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../images/course96.png" />
+               </image>
+            </ImageView>
+            <Label text="Cursos" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../images/enrollment96.png" />
+               </image>
+            </ImageView>
+            <Label text="Matrículas" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../images/student96_2.png" />
+               </image>
+            </ImageView>
+            <Label text="Alunos" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../images/teacher96.png" />
+               </image>
+            </ImageView>
+            <Label text="Instrutores" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../images/report96.png" />
+               </image>
+            </ImageView>
+            <Label text="Relatórios" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../images/serivce96_2.png" />
+               </image>
+            </ImageView>
+            <Label text="Serviços" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../images/door64.png" />
+               </image>
+            </ImageView>
+            <Label text="Sair" GridPane.rowIndex="5" GridPane.valignment="TOP" />
+         </children>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </GridPane>
+   </children>
+</AnchorPane>

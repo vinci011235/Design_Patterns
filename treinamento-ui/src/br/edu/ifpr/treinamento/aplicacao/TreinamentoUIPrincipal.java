@@ -23,7 +23,7 @@ public class TreinamentoUIPrincipal extends Application {
 
 	private ScreenManager sceneManager;
 
-	//SÉRGIO MORO
+	//LULA LIVRE
 	
 	@Override
 	public void start(Stage primaryStage) {

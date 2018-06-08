@@ -208,36 +208,13 @@ public class CadastroModuloController {
    private void changeState(DataEntryState newState) {
       this.lastState = this.state;
       this.state     = newState;
-
-      switch (state) {
-         case INIT      :
-            changeStateInit();
-            break;
-         case VIEW   :
-            changeStateView();
-            break;
-         case INSERT :
-            changeStateInsert();
-            break;
-         case EDIT   :
-            changeStateUpdate();
-            break;
-         case DELETE  :
-            changeStateDelete();
-            break;
-         case SAVE    :
-            changeStateSave();
-            break;
-         case CANCEL :
-            changeStateCancel();
-            break;
-         case SEARCH :
-            changeStateFind();
-            break;
-      }
+      state.changeState(this);
+      
+      //SWITCH CASE REMOVED
+      //DESIGN PATTERN STRATEGY
    }
 
-   private void changeStateInit() {
+   public void changeStateInit() {
       // menu
       miIncluir.disableProperty().set(false);
       miAlterar.disableProperty().set(true);
@@ -250,7 +227,7 @@ public class CadastroModuloController {
          btnIncluir.requestFocus();
    }
 
-   private void changeStateView() {
+   public void changeStateView() {
       // menu
       miIncluir.disableProperty().set(false);
       miAlterar.disableProperty().set(false);
@@ -260,7 +237,7 @@ public class CadastroModuloController {
       miProcurar.disableProperty().set(false);
    }
 
-   private void changeStateInsert() {
+   public void changeStateInsert() {
       // menu
       miIncluir.disableProperty().set(true);
       miAlterar.disableProperty().set(true);
@@ -272,7 +249,7 @@ public class CadastroModuloController {
       insertFocus();
    }
 
-   private void changeStateUpdate() {
+   public void changeStateUpdate() {
       // menu
       miIncluir.disableProperty().set(true);
       miAlterar.disableProperty().set(true);
@@ -284,7 +261,7 @@ public class CadastroModuloController {
       updateFocus();
    }
 
-   private void changeStateDelete() {
+   public void changeStateDelete() {
       // menu
       miIncluir.disableProperty().set(true);
       miAlterar.disableProperty().set(true);
@@ -294,15 +271,15 @@ public class CadastroModuloController {
       miProcurar.disableProperty().set(true);
    }
 
-   private void changeStateSave() {
+   public void changeStateSave() {
       ;
    }
 
-   private void changeStateCancel() {
+   public void changeStateCancel() {
       ;
    }
 
-   private void changeStateFind() {
+   public void changeStateFind() {
       ;
    }
 

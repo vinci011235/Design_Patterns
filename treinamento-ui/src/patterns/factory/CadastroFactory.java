@@ -11,17 +11,17 @@ public interface CadastroFactory {
 	
 	void initState(ScreenManager sceneManager, JpaService jpaService);
 	
-	void init();
+	void init(); //strategy
 	
-	void initBindings();
+	void initBindings(); //strategy
 	
-	void doInsert();
-	void doUpdate();
-	void doDelete();
-	void doSave();
-	void doCancel();
-	void doFind();
-	void doExit();
+	void doInsert(); //TEMPLATE
+	void doUpdate();  //TEMPLATE
+	void doDelete(); //TEMPLATE
+	void doSave(); //TEMPLATE
+	void doCancel(); //TEMPLATE
+	void doFind(); //TEMPLATE
+	void doExit(); //TEMPLATE
 	
 	void changeState(DataEntryState newState);
 	

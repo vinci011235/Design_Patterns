@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import br.edu.ifpr.treinamento.aplicacao.ui.gui.jfx.utils.DataEntryState;
 import br.edu.ifpr.treinamento.aplicacao.ui.gui.jfx.utils.ScreenManager;
 import br.edu.ifpr.treinamento.fxbeans.InstrutorFXBean;
 import br.edu.ifpr.treinamento.fxbeans.ModuloFXBean;
@@ -41,6 +40,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import patterns.strategy.DataEntryState;
 
 public class CadastroModuloController {
    private static final Logger LOGGER =

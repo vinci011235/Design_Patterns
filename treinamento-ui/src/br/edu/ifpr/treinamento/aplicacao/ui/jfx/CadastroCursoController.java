@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import br.edu.ifpr.treinamento.aplicacao.ui.gui.jfx.utils.DataEntryState;
 import br.edu.ifpr.treinamento.aplicacao.ui.gui.jfx.utils.ScreenManager;
 import br.edu.ifpr.treinamento.fxbeans.CursoFXBean;
 import br.edu.ifpr.treinamento.fxbeans.EnderecoFXBean;
@@ -57,6 +56,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import patterns.strategy.DataEntryState;
 
 public class CadastroCursoController {
    private static final String FXML_PATH_NAME =
@@ -133,20 +133,6 @@ public class CadastroCursoController {
    private DataEntryState state;
    private Node           lastFocused;
    
-   
-   /*//	SINGLETON CRIADO
-   private static CadastroCursoController instance = null;
-   private CadastroCursoController() {}
-   public static CadastroCursoController getInstance() {
-	   if (instance == null)
-		   synchronized(CadastroCursoController.class) {
-			   if (instance == null)
-				   instance = new CadastroCursoController();
-		   }
-		   return instance;
-   }*/
-   
-
    @FXML
    private void onMenuButtonBarAction(ActionEvent ev) {
       Object component = ev.getSource();
@@ -653,32 +639,7 @@ public class CadastroCursoController {
       button = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
       button.setDefaultButton(true);
 
-      // 2:
-//      ButtonBar buttonBar =
-//                        (ButtonBar) alert.getDialogPane().lookup(".button-bar");
-//      buttonBar.setButtonOrder(ButtonBar.BUTTON_ORDER_NONE);
-
-      // impedir que o diálogo seja fechado até estar "pronto"
-//      final Button btOk =
-//                     (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
-//
-//      btOk.addEventFilter(ActionEvent.ACTION,new EventHandler<ActionEvent> () {
-//         @Override
-//         public void handle(ActionEvent ev) {
-//            if (false/*ALGUM PROCESSAMENTO É FALSO*/)
-//               ev.consume();
-//         }
-//      });
-/*
-               (event) -> {
-        if (!validateAndStore()) {
-          event.consume();
-        }
-      });
-*/
-
-//      Optional<ButtonType> result = alert.showAndWait();
-      ButtonType           btn    = alert.showAndWait().get();
+      ButtonType btn = alert.showAndWait().get();
 
       if (btn == ButtonType.CANCEL)
          if (lastFocused != null)

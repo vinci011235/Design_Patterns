@@ -1,4 +1,4 @@
-package br.edu.ifpr.treinamento.aplicacao.ui.gui.jfx.utils;
+package patterns.strategy;
 
 import br.edu.ifpr.treinamento.aplicacao.ui.jfx.CadastroCursoController;
 

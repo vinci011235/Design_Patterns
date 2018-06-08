@@ -71,34 +71,8 @@ public class CadastroCursoController extends CadastroController {
 			CursoSituacaoType.ANDAMENTO.toString(), CursoSituacaoType.ENCERRADO.toString(),
 			CursoSituacaoType.CANCELADO.toString());
 
-	@FXML
-	private MenuItem miIncluir;
-	@FXML
-	private MenuItem miAlterar;
-	@FXML
-	private MenuItem miExcluir;
-	@FXML
-	private MenuItem miSalvar;
-	@FXML
-	private MenuItem miCancelar;
-	@FXML
-	private MenuItem miProcurar;
-	@FXML
-	private MenuItem miSair;
-
-	@FXML
-	private Button btnIncluir;
-	@FXML
-	private Button btnAlterar;
-	@FXML
-	private Button btnExcluir;
-	@FXML
-	private Button btnSalvar;
-	@FXML
-	private Button btnCancelar;
-	@FXML
-	private Button btnProcurar;
-
+	// Componentes interface foram para 'CasdatroController'
+	
 	// componentes da interface de entrada de dados - INÍCIO
 	@FXML
 	private GridPane gpDados;
@@ -156,25 +130,29 @@ public class CadastroCursoController extends CadastroController {
 	private DataEntryState lastState;
 	private DataEntryState state;
 	private Node lastFocused;
+	
+	//template CadastroController
+	//received 'this' because in this class extends 'CadastroController'
+	CadastroController cc = this;
 
 	@FXML
 	private void onMenuButtonBarAction(ActionEvent ev) {
 		Object component = ev.getSource();
 
-		if (component == miIncluir || component == btnIncluir)
-			doInsert();
-		else if (component == miAlterar || component == btnAlterar)
-			doUpdate();
-		else if (component == miExcluir || component == btnExcluir)
-			doDelete();
-		else if (component == miSalvar || component == btnSalvar)
-			doSave();
-		else if (component == miCancelar || component == btnCancelar)
-			doCancel();
-		else if (component == miProcurar || component == btnProcurar)
-			doFind();
-		else if (component == miSair)
-			doExit();
+		if (component == cc.getBtnIncluir() || component == cc.getBtnIncluir())
+			cc.insert();
+		else if (component == cc.getMiAlterar() || component == cc.getBtnAlterar())
+			cc.update();
+		else if (component == cc.getMiExcluir() || component == cc.getBtnExcluir())
+			cc.delete();
+		else if (component == cc.getMiSalvar() || component == cc.getBtnSalvar())
+			cc.save();
+		else if (component == cc.getMiCancelar() || component == cc.getBtnCancelar())
+			cc.cancel();
+		else if (component == cc.getMiProcurar() || component == cc.getBtnProcurar())
+			cc.search();
+		else if (component == cc.getMiSair())
+			cc.exit();
 	}
 
 	@FXML
@@ -253,15 +231,6 @@ public class CadastroCursoController extends CadastroController {
 
 		dataEntryActiveProperty.set(false);
 		dataEntryInsertingProperty.set(false);
-	}
-
-	private void initBindings() {
-		btnIncluir.disableProperty().bind(miIncluir.disableProperty());
-		btnAlterar.disableProperty().bind(miAlterar.disableProperty());
-		btnExcluir.disableProperty().bind(miExcluir.disableProperty());
-		btnSalvar.disableProperty().bind(miSalvar.disableProperty());
-		btnCancelar.disableProperty().bind(miCancelar.disableProperty());
-		btnProcurar.disableProperty().bind(miProcurar.disableProperty());
 	}
 
 	@Override
@@ -360,71 +329,8 @@ public class CadastroCursoController extends CadastroController {
 		state.changeState(this);
 	}
 
-	public void changeStateInit() {
-		miIncluir.disableProperty().set(false);
-		miAlterar.disableProperty().set(true);
-		miExcluir.disableProperty().set(true);
-		miSalvar.disableProperty().set(true);
-		miCancelar.disableProperty().set(true);
-		miProcurar.disableProperty().set(false);
-		// inicializações adicionais
-		btnIncluir.requestFocus();
-	}
-
-	public void changeStateView() {
-		miIncluir.disableProperty().set(false);
-		miAlterar.disableProperty().set(false);
-		miExcluir.disableProperty().set(false);
-		miSalvar.disableProperty().set(true);
-		miCancelar.disableProperty().set(true);
-		miProcurar.disableProperty().set(false);
-	}
-
-	public void changeStateInsert() {
-		miIncluir.disableProperty().set(true);
-		miAlterar.disableProperty().set(true);
-		miExcluir.disableProperty().set(true);
-		miSalvar.disableProperty().set(false);
-		miCancelar.disableProperty().set(false);
-		miProcurar.disableProperty().set(true);
-		// ajusta a interface para inclusão
-		insertFocus();
-	}
-
-	public void changeStateUpdate() {
-		miIncluir.disableProperty().set(true);
-		miAlterar.disableProperty().set(true);
-		miExcluir.disableProperty().set(true);
-		miSalvar.disableProperty().set(false);
-		miCancelar.disableProperty().set(false);
-		miProcurar.disableProperty().set(false);
-		// ajusta a entrada de dados para alteração
-		updateFocus();
-	}
-
-	public void changeStateDelete() {
-		// menu
-		miIncluir.disableProperty().set(true);
-		miAlterar.disableProperty().set(true);
-		miExcluir.disableProperty().set(false);
-		miSalvar.disableProperty().set(true);
-		miCancelar.disableProperty().set(true);
-		miProcurar.disableProperty().set(true);
-	}
-
-	public void changeStateSave() {
-		;
-	}
-
-	public void changeStateCancel() {
-		;
-	}
-
-	public void changeStateFind() {
-		;
-	}
-
-	public void insertFocus() {
+	@Override
+	public void doInsertFocus() {
 		clearData();
 
 		dataEntryActiveProperty.set(true);
@@ -433,12 +339,14 @@ public class CadastroCursoController extends CadastroController {
 		txfCodigo.requestFocus();
 	}
 
-	public void viewFocus() {
+	@Override
+	public void doViewFocus() {
 		dataEntryActiveProperty.set(false);
 		dataEntryInsertingProperty.set(false);
 	}
 
-	public void updateFocus() {
+	@Override
+	public void doUpdateFocus() {
 		showData();
 
 		dataEntryActiveProperty.set(true);
@@ -447,7 +355,8 @@ public class CadastroCursoController extends CadastroController {
 		txfNome.requestFocus();
 	}
 
-	public void showData() {
+	@Override
+	public void doShowData() {
 		// PARA TESTE "PROCURAR"
 		// fxbCurso.codigoProperty().set("AAA");
 		// fxbCurso.nomeProperty().set("CursoFXBean AAA");
@@ -466,8 +375,9 @@ public class CadastroCursoController extends CadastroController {
 		// fxbCurso.modulosProperty().add(
 		// new ModuloFXBean("MÓDULO EEE",DateTimeUtils.localDateNowPlusDays(8)));
 	}
-
-	public void clearData() {
+	
+	@Override
+	public void doClearData() {
 		txfCodigo.clear();
 		txfNome.clear();
 

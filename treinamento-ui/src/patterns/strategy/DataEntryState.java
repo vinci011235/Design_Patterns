@@ -1,103 +1,54 @@
 package patterns.strategy;
 
-import br.edu.ifpr.treinamento.aplicacao.ui.jfx.CadastroCursoController;
-import br.edu.ifpr.treinamento.aplicacao.ui.jfx.CadastroModuloController;
+import patterns.template.CadastroController;
 
 public enum DataEntryState implements DataEntryStateInterface {
 	INIT {
 		@Override
-		public void changeState(CadastroCursoController ccc) {
-			ccc.changeStateInit();
-			System.out.println("Teste_1s");
-		}
-
-		@Override
-		public void changeState(CadastroModuloController cmc) {
-			cmc.changeStateInit();
+		public void changeState(CadastroController cc) {
+			cc.changeStateInit();
 		}
 	},
 	VIEW {
 		@Override
-		public void changeState(CadastroCursoController ccc) {
-			ccc.changeStateView();
-		}
-
-		@Override
-		public void changeState(CadastroModuloController cmc) {
-			cmc.changeStateView();
-			
+		public void changeState(CadastroController cc) {
+			cc.changeStateView();
 		}
 	},
 	INSERT {
 		@Override
-		public void changeState(CadastroCursoController ccc) {
-			ccc.changeStateInsert();
-		}
-
-		@Override
-		public void changeState(CadastroModuloController cmc) {
-			cmc.changeStateInsert();
-			
+		public void changeState(CadastroController cc) {
+			cc.changeStateInsert();
 		}
 	},
 	EDIT {
 		@Override
-		public void changeState(CadastroCursoController ccc) {
-			ccc.changeStateUpdate();
-		}
-
-		@Override
-		public void changeState(CadastroModuloController cmc) {
-			cmc.changeStateUpdate();
-			
+		public void changeState(CadastroController cc) {
+			cc.changeStateUpdate();
 		}
 	},
 	DELETE {
 		@Override
-		public void changeState(CadastroCursoController ccc) {
-			ccc.changeStateDelete();
-		}
-
-		@Override
-		public void changeState(CadastroModuloController cmc) {
-			cmc.changeStateDelete();
-			
+		public void changeState(CadastroController cc) {
+			cc.changeStateDelete();
 		}
 	},
 	SAVE {
 		@Override
-		public void changeState(CadastroCursoController ccc) {
-			ccc.changeStateSave();
-		}
-
-		@Override
-		public void changeState(CadastroModuloController cmc) {
-			cmc.changeStateSave();
-			
+		public void changeState(CadastroController cc) {
+			cc.changeStateSave();
 		}
 	},
 	CANCEL {
 		@Override
-		public void changeState(CadastroCursoController ccc) {
-			ccc.changeStateCancel();
-		}
-
-		@Override
-		public void changeState(CadastroModuloController cmc) {
-			cmc.changeStateCancel();
-			
+		public void changeState(CadastroController cc) {
+			cc.changeStateCancel();
 		}
 	},
 	SEARCH {
 		@Override
-		public void changeState(CadastroCursoController ccc) {
-			ccc.changeStateFind();
-		}
-
-		@Override
-		public void changeState(CadastroModuloController cmc) {
-			cmc.changeStateFind();
-			
+		public void changeState(CadastroController cc) {
+			cc.changeStateFind();
 		}
 	};
 }

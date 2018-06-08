@@ -48,41 +48,24 @@ public class PrincipalController_GridImage {
    private static final KeyCombination SAIR_KEY =
             new KeyCodeCombination(KeyCode.X,KeyCombination.ALT_DOWN);
 
-   @FXML
-   private GridPane  gpPrincipal;
+   @FXML   private GridPane  gpPrincipal;
 
-   @FXML
-   private ImageView ivCursos;
-   @FXML
-   private Label     lbCursos;
-   @FXML
-   private ImageView ivMódulos;
-   @FXML
-   private Label     lbMódulos;
-   @FXML
-   private ImageView ivMatriculas;
-   @FXML
-   private Label     lbMatriculas;
-   @FXML
-   private ImageView ivAlunos;
-   @FXML
-   private Label     lbAlunos;
-   @FXML
-   private ImageView ivInstrutores;
-   @FXML
-   private Label     lbInstrutores;
-   @FXML
-   private ImageView ivRelatorios;
-   @FXML
-   private Label     lbRelatorios;
-   @FXML
-   private ImageView ivServicos;
-   @FXML
-   private Label     lbServicos;
-   @FXML
-   private ImageView ivSair;
-   @FXML
-   private Label     lbSair;
+   @FXML   private ImageView ivCursos;
+   @FXML   private Label     lbCursos;
+   @FXML   private ImageView ivMódulos;
+   @FXML   private Label     lbMódulos;
+   @FXML   private ImageView ivMatriculas;
+   @FXML   private Label     lbMatriculas;
+   @FXML   private ImageView ivAlunos;
+   @FXML   private Label     lbAlunos;
+   @FXML   private ImageView ivInstrutores;
+   @FXML   private Label     lbInstrutores;
+   @FXML   private ImageView ivRelatorios;
+   @FXML   private Label     lbRelatorios;
+   @FXML   private ImageView ivServicos;
+   @FXML   private Label     lbServicos;
+   @FXML   private ImageView ivSair;
+   @FXML   private Label     lbSair;
 
    private ScreenManager sceneManager;
 
@@ -95,16 +78,9 @@ public class PrincipalController_GridImage {
    private SceneKeyPressed sceneKeyPressed = new SceneKeyPressed();
 
    @FXML
-   // método invocado logo após a construção da interface gráfica em memória e
-   // imediatamente antes de ser exibida
    private void initialize() {
-      // inicia a conexão com a base de dados via JPA. O método que encerra a
-      // conexão é invocado no método 'changeView', caso o usuário selecione
-      // sair
       jpaService.createEntityManagerFactory(true,false);
-      // os objetos Label neste vetor serão usados para que seus textos sejam
-      // manipulados quando o usuário mover o cursos sobre a imagem
-      // imediatamente acima dos mesmos
+      
       labels = new Label[8];
       labels[0] = lbCursos;
       labels[1] = lbMódulos;
@@ -114,6 +90,7 @@ public class PrincipalController_GridImage {
       labels[5] = lbRelatorios;
       labels[6] = lbServicos;
       labels[7] = lbSair;
+      
       // guarda os estilos padrão para serem restaurados após serem manipulados
       imageViewOldStyle = ivCursos.getStyle();
       labelOldStyle     = lbCursos.getStyle();
@@ -121,9 +98,7 @@ public class PrincipalController_GridImage {
       Platform.runLater(new Runnable() {
          @Override
          public void run() {
-            sceneManager.getStage().getScene()
-                                   .addEventFilter(KeyEvent.KEY_RELEASED,
-                                                   sceneKeyPressed);
+            sceneManager.getStage().getScene().addEventFilter(KeyEvent.KEY_RELEASED, sceneKeyPressed);
          }
       });
 
@@ -175,18 +150,10 @@ public class PrincipalController_GridImage {
       }
       else {
          sceneManager.add(sceneManager.getStage().getScene().getRoot());
-
-//         String     url      = FXML_PATH_NAME + CADASTRO_CURSO_FXML;
-//         URL        fxmlFile = getClass().getResource(url);
-//         FXMLLoader loader   = new FXMLLoader(fxmlFile);
-//         BorderPane root     = loader.load(); // IOException
          BorderPane root  = null;
          Scene      scene = sceneManager.getStage().getScene();
 
-//         scene.removeEventFilter(KeyEvent.KEY_RELEASED,sceneKeyPressed);
-
          if (obj == ivCursos || obj == lbCursos) {
-//            root.centerProperty().set(new CadastroCurso(jpaService));
             String     url      = FXML_PATH_NAME + CADASTRO_CURSO_FXML;
             URL        fxmlFile = getClass().getResource(url);
             FXMLLoader loader   = new FXMLLoader(fxmlFile);
@@ -242,10 +209,6 @@ public class PrincipalController_GridImage {
    }
 
    private void changeLabelStyle(Node node, String style) {
-//      Node node   = (Node) ev.getSource();
-//      int  row    = GridPane.getRowIndex(node);
-//      int  column = GridPane.getColumnIndex(node);
-//      int  index  = (row / 2) * 3 + column;
       int index = getLabelIndexFromGrid(node);
 
       labels[index].setStyle(style);
@@ -301,13 +264,7 @@ public class PrincipalController_GridImage {
       Tooltip.install(ivSair,ttpSair);
       lbSair.tooltipProperty().set(ttpSair);
    }
-   // ==========================================================================
-   // === FUNÇÕES DE SUPORTE - FIM =============================================
-   // ==========================================================================
 
-   // ==========================================================================
-   // === CLASSES DE SUPORTE - INÍCIO ==========================================
-   // ==========================================================================
    private class SceneKeyPressed implements EventHandler<KeyEvent> {
       @Override
       public void handle(KeyEvent ev) {
@@ -319,32 +276,9 @@ public class PrincipalController_GridImage {
                try { changeView(lbMódulos); }
                catch (IOException ex) { ex.printStackTrace(); }
             else
-//               if (MATRÍCULAS_KEY.match(ev))
-//                  try { changeView(lbMatriculas); }
-//                  catch (IOException ex) { ex.printStackTrace(); }
-//               else
-//                  if (ALUNOS_KEY.match(ev))
-//                     try { changeView(lbAlunos); }
-//                     catch (IOException ex) { ex.printStackTrace(); }
-//                  else
-//                     if (INSTRUTORES_KEY.match(ev))
-//                        try { changeView(lbInstrutores); }
-//                        catch (IOException ex) { ex.printStackTrace(); }
-//                     else
-//                        if (RELATÓRIOS_KEY.match(ev))
-//                           try { changeView(lbRelatorios); }
-//                           catch (IOException ex) { ex.printStackTrace(); }
-//                        else
-//                           if (SERVIÇOS_KEY.match(ev))
-//                              try { changeView(lbServicos); }
-//                              catch (IOException ex) { ex.printStackTrace(); }
-//                           else
                               if (SAIR_KEY.match(ev))
                                  try { changeView(lbSair); }
                                  catch (IOException ex) { ex.printStackTrace();}
       }
    }
-   // ==========================================================================
-   // === CLASSES DE SUPORTE - FIM =============================================
-   // ==========================================================================
 }

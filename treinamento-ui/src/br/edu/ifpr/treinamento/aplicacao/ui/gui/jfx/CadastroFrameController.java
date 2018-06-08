@@ -89,11 +89,6 @@ public class CadastroFrameController {
                         }
    }
 
-//   @FXML
-//   private void initialize() {
-//      initState();
-//   }
-
    public void initState(ScreenManager sceneManager, JpaService jpaService) {
       this.jpaService = jpaService;
 
@@ -119,7 +114,6 @@ public class CadastroFrameController {
    }
 
    private void initBindings() {
-      // barra de botões
       btnIncluir.disableProperty().bind(miIncluir.disableProperty());
       btnAlterar.disableProperty().bind(miAlterar.disableProperty());
       btnExcluir.disableProperty().bind(miExcluir.disableProperty());
@@ -373,31 +367,6 @@ public class CadastroFrameController {
       button = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
       button.setDefaultButton(true);
 
-      // 2:
-//      ButtonBar buttonBar =
-//                        (ButtonBar) alert.getDialogPane().lookup(".button-bar");
-//      buttonBar.setButtonOrder(ButtonBar.BUTTON_ORDER_NONE);
-
-      // impedir que o diálogo seja fechado até estar "pronto"
-//      final Button btOk =
-//                     (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
-//
-//      btOk.addEventFilter(ActionEvent.ACTION,new EventHandler<ActionEvent> () {
-//         @Override
-//         public void handle(ActionEvent ev) {
-//            if (false/*ALGUM PROCESSAMENTO É FALSO*/)
-//               ev.consume();
-//         }
-//      });
-/*
-               (event) -> {
-        if (!validateAndStore()) {
-          event.consume();
-        }
-      });
-*/
-
-//      Optional<ButtonType> result = alert.showAndWait();
       ButtonType           btn    = alert.showAndWait().get();
 
       if (btn == ButtonType.CANCEL)
@@ -407,30 +376,15 @@ public class CadastroFrameController {
       return btn == ButtonType.OK;
    }
 
-   // ==========================================================================
-   // === MÉTODOS DE SUPORTE - INÍCIO ==========================================
-   // ==========================================================================
    public FocusPropertyChangeListener getFocusPropertyChangeListener() {
       return new FocusPropertyChangeListener();
    }
-   // ==========================================================================
-   // === MÉTODOS DE SUPORTE - FIM =============================================
-   // ==========================================================================
 
-   // ==========================================================================
-   // === CLASSES DE SUPORTE - INÍCIO ==========================================
-   // ==========================================================================
    private class FocusPropertyChangeListener implements ChangeListener<Node> {
       @Override
       public void changed(ObservableValue<? extends Node> observable,
                           Node oldValue, Node newValue) {
-//         System.out.println("ObservableValue " + observable);
-//         System.out.println("       oldValue " + oldValue);
-//         System.out.println("       newValue " + newValue);
          lastFocused = oldValue;
       }
    }
-   // ==========================================================================
-   // === CLASSES DE SUPORTE - FIM =============================================
-   // ==========================================================================
 }

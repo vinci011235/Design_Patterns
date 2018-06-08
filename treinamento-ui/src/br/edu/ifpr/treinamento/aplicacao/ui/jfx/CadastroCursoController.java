@@ -69,7 +69,6 @@ public class CadastroCursoController {
    private static final DateTimeFormatter DATE_FORMATTER =
                                       DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-   // dados para o ChoiceBox "Situação"
    private static final List<String> CURSO_SITUACOES = Arrays.asList(
                                          CursoSituacaoType.ABERTO.toString(),
                                          CursoSituacaoType.ANDAMENTO.toString(),
@@ -133,16 +132,30 @@ public class CadastroCursoController {
    private DataEntryState lastState;
    private DataEntryState state;
    private Node           lastFocused;
+   
+   
+   /*//	SINGLETON CRIADO
+   private static CadastroCursoController instance = null;
+   private CadastroCursoController() {}
+   public static CadastroCursoController getInstance() {
+	   if (instance == null)
+		   synchronized(CadastroCursoController.class) {
+			   if (instance == null)
+				   instance = new CadastroCursoController();
+		   }
+		   return instance;
+   }*/
+   
 
    @FXML
    private void onMenuButtonBarAction(ActionEvent ev) {
       Object component = ev.getSource();
-
+  
       if (component == miIncluir || component == btnIncluir)
-         changeState(DataEntryState.INSERT);
+    	  doInsert();
       else
          if (component == miAlterar || component == btnAlterar)
-            changeState(DataEntryState.EDIT);
+            doUpdate();
          else
             if (component == miExcluir || component == btnExcluir)
                doDelete();
@@ -159,11 +172,6 @@ public class CadastroCursoController {
                         if (component == miSair)
                            doExit();
    }
-
-//   @FXML
-//   private void initialize() {
-//      initState();
-//   }
 
    @FXML
    private void onModulosButtonAction(ActionEvent ev) throws IOException {
@@ -215,6 +223,7 @@ public class CadastroCursoController {
                         tvwModulos.getSelectionModel().clearSelection();
    }
 
+
    public void initState(ScreenManager sceneManager, JpaService jpaService) {
       this.jpaService = jpaService;
 
@@ -223,13 +232,6 @@ public class CadastroCursoController {
 
       initBindings();
 
-      // o método a seguir DEVE ser chamado somente na inicialização
-//      getDataEntry();
-      // cria o objeto CursoFXBean
-      // ************************************************************
-      // ESTE OBJETO DEVE EXISTIR ANTES DOS MÉTODOS initBindingDataEntry e
-      // initBindingModulos, POIS OS MESMOS INTERAGEM COM ELE
-      // ************************************************************
       fxbCurso     = new CursoFXBean();
       lastFXBCurso = new CursoFXBean();
       // deixa a UI em estado inicial
@@ -263,7 +265,6 @@ public class CadastroCursoController {
    }
 
    private void initBindings() {
-      // barra de botões
       btnIncluir.disableProperty().bind(miIncluir.disableProperty());
       btnAlterar.disableProperty().bind(miAlterar.disableProperty());
       btnExcluir.disableProperty().bind(miExcluir.disableProperty());
@@ -272,36 +273,16 @@ public class CadastroCursoController {
       btnProcurar.disableProperty().bind(miProcurar.disableProperty());
    }
 
-//   private void getDataEntry() {
-//      ObjectProperty<Node> opNode = borderPane.centerProperty();
-//      Node                 node   = opNode.get();
-//
-//      if (node != null) {
-//         cadastro = (CadastroCurso) node;
-//         cadastro.initState();
-//      }
-//   }
-
+   
    private void doInsert() {
-      // VALIDAR OS DADOS
-      // SE DADOS VÁLIDOS
-      //    ENTÃO INCLUIR
-      //    SENÃO ;
-      // FIM-SE
+	   changeState(DataEntryState.INSERT);
    }
 
    private void doUpdate() {
-      // VALIDAR OS DADOS
-      // SE DADOS VÁLIDOS
-      //    ENTÃO ALTERAR
-      //    SENÃO ;
-      // FIM-SE
+	   changeState(DataEntryState.EDIT);
    }
 
    private void doDelete() {
-      // SE DEVE EXCLUIR
-      //    ENTÃO PROCESSAR EXCLUSÃO DE DADOS
-      // FIM-SE
       if (showAlert(AlertType.CONFIRMATION,"Pedido de Exclusão",
                     "Deseja realmente excluir os dados???")) {
          // EXCLUIR DADOS
@@ -316,8 +297,6 @@ public class CadastroCursoController {
 
    private void doSave() {
       boolean dadosValidos = true;
-      // VALIDAR ENTRADA DE DADOS
-      // SE DADOS NÃO VÁLIDOS
       if (dadosValidos) {
          toEntity();
          if (state == DataEntryState.INSERT)
@@ -325,24 +304,9 @@ public class CadastroCursoController {
          else
             dao.update(curso);
       }
-      else {
-      // SENÃO PROCESSAR DADOS
-      //       SE ESTÁ INCLUINDO
-      //          ENTÃO LIMPAR ENTRADA DE DADOS
-      //                ALTERAR ESTADO "INICIAL"
-      //          SENÃO ALTERAR ESTADO "VISUALIZAÇÃO"
-      //       FIM-SE
-      // FIM-SE
-      }
-//      if (state == DataEntryState.INSERT) {
-//         changeState(DataEntryState.INIT);
-//         if (cadastro != null)
-//            cadastro.initState();
-//      }
-//      else {
-         changeState(DataEntryState.VIEW);
-         viewFocus();
-//      }
+
+      changeState(DataEntryState.VIEW);
+      viewFocus();
    }
 
    private void doCancel() {
@@ -399,37 +363,11 @@ public class CadastroCursoController {
    private void changeState(DataEntryState newState) {
       this.lastState = state;
       this.state     = newState;
-
-      switch (state) {
-         case INIT      :
-            changeStateInit();
-            break;
-         case VIEW   :
-            changeStateView();
-            break;
-         case INSERT :
-            changeStateInsert();
-            break;
-         case EDIT   :
-            changeStateUpdate();
-            break;
-         case DELETE  :
-            changeStateDelete();
-            break;
-         case SAVE    :
-            changeStateSave();
-            break;
-         case CANCEL :
-            changeStateCancel();
-            break;
-         case SEARCH :
-            changeStateFind();
-            break;
-      }
+      //SWITCH CASE REMOVIDO
+      state.changeState(this);
    }
 
-   private void changeStateInit() {
-      // menu
+   public void changeStateInit() {
       miIncluir.disableProperty().set(false);
       miAlterar.disableProperty().set(true);
       miExcluir.disableProperty().set(true);
@@ -440,8 +378,7 @@ public class CadastroCursoController {
       btnIncluir.requestFocus();
    }
 
-   private void changeStateView() {
-      // menu
+   public void changeStateView() {
       miIncluir.disableProperty().set(false);
       miAlterar.disableProperty().set(false);
       miExcluir.disableProperty().set(false);
@@ -450,8 +387,7 @@ public class CadastroCursoController {
       miProcurar.disableProperty().set(false);
    }
 
-   private void changeStateInsert() {
-      // menu
+   public void changeStateInsert() {
       miIncluir.disableProperty().set(true);
       miAlterar.disableProperty().set(true);
       miExcluir.disableProperty().set(true);
@@ -462,8 +398,7 @@ public class CadastroCursoController {
       insertFocus();
    }
 
-   private void changeStateUpdate() {
-      // menu
+   public void changeStateUpdate() {
       miIncluir.disableProperty().set(true);
       miAlterar.disableProperty().set(true);
       miExcluir.disableProperty().set(true);
@@ -474,7 +409,7 @@ public class CadastroCursoController {
       updateFocus();
    }
 
-   private void changeStateDelete() {
+   public void changeStateDelete() {
       // menu
       miIncluir.disableProperty().set(true);
       miAlterar.disableProperty().set(true);
@@ -484,15 +419,15 @@ public class CadastroCursoController {
       miProcurar.disableProperty().set(true);
    }
 
-   private void changeStateSave() {
+   public void changeStateSave() {
       ;
    }
 
-   private void changeStateCancel() {
+   public void changeStateCancel() {
       ;
    }
 
-   private void changeStateFind() {
+   public void changeStateFind() {
       ;
    }
 
@@ -515,8 +450,7 @@ public class CadastroCursoController {
 
       dataEntryActiveProperty.set(true);
       dataEntryInsertingProperty.set(false);
-      // o foco deve ir ao primeiro componente gráfico que não descreva o(s)
-      // identificador(es) dos dados exibidos
+
       txfNome.requestFocus();
    }
 
@@ -898,60 +832,6 @@ public class CadastroCursoController {
       }
    }
 
-   // PARA TESTES!!!
-//   private class DateToLocalDateConverter extends StringConverter<Date> {
-//      private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//
-//      @Override
-//      public String toString(Date object) {
-//         if (object == null) return "";
-//
-//         return sdf.format(object);
-//      }
-//
-//      @Override
-//      public Date fromString(String string) {
-//         if (string == null || string.isEmpty()) return null;
-//
-//         Date date = null;
-//         try { date = sdf.parse(string); }
-//         catch (ParseException ex) {}
-//
-//         return date;
-//      }
-//   }
-
-   // PARA TESTES!!!
-   // filtro que permite somente valores numéricos nos TextField
-//   private class IntegerFilter implements UnaryOperator<TextFormatter.Change> {
-//      @Override
-//      public Change apply(Change change) {
-//         String text = change.getText();
-//
-//         // se qualquer caractere em 'text' NÃO for numérico, a função é
-//         // cancelada e o valor digitado é descaratado no TextField
-//         for (int i = 0; i < text.length(); i++)
-//            if (!Character.isDigit(text.charAt(i)))
-//               return null;
-//
-//         return change;
-//      }
-//   }
-
-   // PARA TESTES!!!
-//   private class InicioFormatterCallback
-//                 implements Callback<CellDataFeatures<ModuloFXBean, LocalDate>,
-//                                     ObservableValue<LocalDate>> {
-//      @Override
-//      public ObservableValue<LocalDate> call(
-//                                     CellDataFeatures<ModuloFXBean, LocalDate> cell) {
-//         ObjectProperty<LocalDate> property = new SimpleObjectProperty<>();
-//
-//
-//         return property;
-//      }
-//   }
-
    private class InicioFormatterCallback
                  implements Callback<TableColumn<ModuloFXBean, LocalDate>,
                                      TableCell<ModuloFXBean, LocalDate>> {
@@ -971,29 +851,4 @@ public class CadastroCursoController {
          else setText(DATE_FORMATTER.format(item));
       }
    }
-
-   // PARA TESTES!!!
-   // restringe DatePicker a datas iguais ou maiores que a data atual
-//   private class RestrictDaysCallback
-//                 implements Callback<DatePicker, DateCell> {
-//      @Override
-//      public DateCell call(DatePicker param) {
-//         return new RestrictDaysDateCell();
-//      }
-//   }
-//
-//   private class RestrictDaysDateCell extends DateCell {
-//      @Override
-//      public void updateItem(LocalDate item, boolean empty) {
-//         super.updateItem(item,empty);
-//
-//         if (item.isBefore(dpkInicio.getValue())) {
-//            disableProperty().set(true);
-//            this.styleProperty().set("-fx-background-color: #ffc0cb"); // pink
-//         }
-//      }
-//   }
-   // ==========================================================================
-   // === CLASSES DE SUPORTE - FIM =============================================
-   // ==========================================================================
 }

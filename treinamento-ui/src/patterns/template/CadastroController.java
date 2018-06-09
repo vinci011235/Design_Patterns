@@ -1,6 +1,7 @@
 package patterns.template;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -9,92 +10,42 @@ public abstract class CadastroController {
 
 	// Pattern 'Template' to class 'CadastroCursoController' and
 	// 'CadastroModuloController'
-	@FXML
-	private MenuItem miIncluir;
-	@FXML
-	private MenuItem miAlterar;
-	@FXML
-	private MenuItem miExcluir;
-	@FXML
-	private MenuItem miSalvar;
-	@FXML
-	private MenuItem miCancelar;
-	@FXML
-	private MenuItem miProcurar;
-	@FXML
-	private MenuItem miSair;
+	@FXML	private MenuItem miIncluir;
+	@FXML	private MenuItem miAlterar;
+	@FXML	private MenuItem miExcluir;
+	@FXML	private MenuItem miSalvar;
+	@FXML	private MenuItem miCancelar;
+	@FXML	private MenuItem miProcurar;
+	@FXML	private MenuItem miSair;
 
-	@FXML
-	private Button btnIncluir;
-	@FXML
-	private Button btnAlterar;
-	@FXML
-	private Button btnExcluir;
-	@FXML
-	private Button btnSalvar;
-	@FXML
-	private Button btnCancelar;
-	@FXML
-	private Button btnProcurar;
-
-	// INCLUSÃO OU ALTERAÇÃO: true; VISUALIZAR: false
-	private BooleanProperty dataEntryActiveProperty;
-	// INCLUSÃO: true; ALTERAÇÃO: false
-	private BooleanProperty dataEntryInsertingProperty;
+	@FXML	private Button btnIncluir;
+	@FXML	private Button btnAlterar;
+	@FXML	private Button btnExcluir;
+	@FXML	private Button btnSalvar;
+	@FXML	private Button btnCancelar;
+	@FXML	private Button btnProcurar;
 
 	public CadastroController() {
 	}
+	
+	@FXML
+	private void onMenuButtonBarAction(ActionEvent ev) {
+		Object component = ev.getSource();
 
-	public MenuItem getMiIncluir() {
-		return miIncluir;
-	}
-
-	public MenuItem getMiAlterar() {
-		return miAlterar;
-	}
-
-	public MenuItem getMiExcluir() {
-		return miExcluir;
-	}
-
-	public MenuItem getMiSalvar() {
-		return miSalvar;
-	}
-
-	public MenuItem getMiCancelar() {
-		return miCancelar;
-	}
-
-	public MenuItem getMiProcurar() {
-		return miProcurar;
-	}
-
-	public MenuItem getMiSair() {
-		return miSair;
-	}
-
-	public Button getBtnIncluir() {
-		return btnIncluir;
-	}
-
-	public Button getBtnAlterar() {
-		return btnAlterar;
-	}
-
-	public Button getBtnExcluir() {
-		return btnExcluir;
-	}
-
-	public Button getBtnSalvar() {
-		return btnSalvar;
-	}
-
-	public Button getBtnCancelar() {
-		return btnCancelar;
-	}
-
-	public Button getBtnProcurar() {
-		return btnProcurar;
+		if (component == miIncluir || component == btnIncluir)
+			insert();
+		else if (component == miAlterar || component == btnAlterar)
+			update();
+		else if (component == miExcluir || component == btnExcluir)
+			delete();
+		else if (component == miSalvar || component == btnSalvar)
+			save();
+		else if (component == miCancelar || component == btnCancelar)
+			cancel();
+		else if (component == miProcurar || component == btnProcurar)
+			search();
+		else if (component == miSair)
+			exit();
 	}
 
 	public void insert() {

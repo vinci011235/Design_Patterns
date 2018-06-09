@@ -63,8 +63,6 @@ public class CadastroCursoController extends CadastroController {
 	private static final String FXML_PATH_NAME = "/br/edu/ifpr/treinamento/aplicacao/ui/jfx/";
 	private static final String CADASTRO_MÓDULO_FXML = "CadastroModulo.fxml";
 
-	private static final Logger LOGGER = Logger.getLogger(CadastroCursoController.class.getName());
-
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	private static final List<String> CURSO_SITUACOES = Arrays.asList(CursoSituacaoType.ABERTO.toString(),
@@ -73,42 +71,24 @@ public class CadastroCursoController extends CadastroController {
 
 	// Componentes interface foram para 'CasdatroController'
 	
-	// componentes da interface de entrada de dados - INÍCIO
-	@FXML
-	private GridPane gpDados;
-	@FXML
-	private TextField txfCodigo;
-	@FXML
-	private TextField txfNome;
-	@FXML
-	private ChoiceBox<String> chbSituacao;
-	@FXML
-	private DatePicker dpkInicio;
+	@FXML	private GridPane gpDados;
+	@FXML	private TextField txfCodigo;
+	@FXML	private TextField txfNome;
+	@FXML	private ChoiceBox<String> chbSituacao;
+	@FXML	private DatePicker dpkInicio;
 
-	@FXML
-	private Label lbModulos;
-	@FXML
-	private TableView<ModuloFXBean> tvwModulos;
-	@FXML
-	private TableColumn<ModuloFXBean, LocalDate> tclInicio;
-	@FXML
-	private TableColumn<ModuloFXBean, Integer> tclDuracao;
-	@FXML
-	private TableColumn<ModuloFXBean, String> tclNome;
+	@FXML	private Label lbModulos;
+	@FXML	private TableView<ModuloFXBean> tvwModulos;
+	@FXML	private TableColumn<ModuloFXBean, LocalDate> tclInicio;
+	@FXML	private TableColumn<ModuloFXBean, Integer> tclDuracao;
+	@FXML	private TableColumn<ModuloFXBean, String> tclNome;
 
-	@FXML
-	private Button btnIncluirModulo;
-	@FXML
-	private Button btnAlterarModulo;
-	@FXML
-	private Button btnExcluirModulo;
-	@FXML
-	private Button btnProcurarModulo;
-	@FXML
-	private Button btnSelecionarTodosModulo;
-	@FXML
-	private Button btnLimparSelecaoModulo;
-	// componentes da interface de entrada de dados - FIM
+	@FXML	private Button btnIncluirModulo;
+	@FXML	private Button btnAlterarModulo;
+	@FXML	private Button btnExcluirModulo;
+	@FXML	private Button btnProcurarModulo;
+	@FXML	private Button btnSelecionarTodosModulo;
+	@FXML	private Button btnLimparSelecaoModulo;
 
 	// INCLUSÃO OU ALTERAÇÃO: true; VISUALIZAR: false
 	private BooleanProperty dataEntryActiveProperty;
@@ -118,43 +98,15 @@ public class CadastroCursoController extends CadastroController {
 	private CursoPersistenceDAO dao;
 	private CursoFXBean fxbCurso;
 	private Curso curso;
-	// usada somente quando o botão "Incluir" é clicado, pois o sistema precisa
-	// saber se o estado anterior era 'INIT' ou 'VIEW'
 	private CursoFXBean lastFXBCurso;
 
 	private ScreenManager sceneManager;
 	private JpaService jpaService;
 
-	// usada somente quando o botão "Incluir" é clicado, pois o sistema precisa
-	// saber se o estado anterior era 'INIT' ou 'VIEW'
 	private DataEntryState lastState;
 	private DataEntryState state;
 	private Node lastFocused;
 	
-	//template CadastroController
-	//received 'this' because in this class extends 'CadastroController'
-	CadastroController cc = this;
-
-	@FXML
-	private void onMenuButtonBarAction(ActionEvent ev) {
-		Object component = ev.getSource();
-
-		if (component == cc.getBtnIncluir() || component == cc.getBtnIncluir())
-			cc.insert();
-		else if (component == cc.getMiAlterar() || component == cc.getBtnAlterar())
-			cc.update();
-		else if (component == cc.getMiExcluir() || component == cc.getBtnExcluir())
-			cc.delete();
-		else if (component == cc.getMiSalvar() || component == cc.getBtnSalvar())
-			cc.save();
-		else if (component == cc.getMiCancelar() || component == cc.getBtnCancelar())
-			cc.cancel();
-		else if (component == cc.getMiProcurar() || component == cc.getBtnProcurar())
-			cc.search();
-		else if (component == cc.getMiSair())
-			cc.exit();
-	}
-
 	@FXML
 	private void onModulosButtonAction(ActionEvent ev) throws IOException {
 		Button btn = (Button) ev.getSource();
@@ -273,11 +225,6 @@ public class CadastroCursoController extends CadastroController {
 	
 	@Override
 	public void doCancel() {
-		// SE CANCELAR OPERAÇÃO
-		// ENTÃO LIMPAR ENTRADA DE DADOS
-		// ALTERAR ESTADO "INICIAL"
-		// SENÃO ALTERAR ESTADO "VISUALIZAÇÃO"
-		// FIM-SE
 		if (showAlert(AlertType.CONFIRMATION, "Pedido de Cancelamento", "Deseja realmente cancelar a operação?")) {
 			if (lastState == DataEntryState.INIT || lastState == DataEntryState.INSERT) {
 				changeState(DataEntryState.INIT);
@@ -312,13 +259,8 @@ public class CadastroCursoController extends CadastroController {
 
 	@Override
 	public void doExit() {
-		// SE HOUVER EDIÇÃO PENDENTE
-		// ENTÃO SE CANCELAR EDIÇÃO
 		if (showAlert(AlertType.CONFIRMATION, "Pedido de Fechamento", "Deseja realmente Sair?"))
 			sceneManager.previous();
-		// ENTÃO SAIR
-		// FIM-SE
-		// FIM-SE
 	}
 
 	private void changeState(DataEntryState newState) {
@@ -641,9 +583,6 @@ public class CadastroCursoController extends CadastroController {
 	private class FocusPropertyChangeListener implements ChangeListener<Node> {
 		@Override
 		public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
-			// System.out.println("ObservableValue " + observable);
-			// System.out.println(" oldValue " + oldValue);
-			// System.out.println(" newValue " + newValue);
 			lastFocused = oldValue;
 		}
 	}

@@ -46,19 +46,14 @@ import patterns.template.CadastroController;
 public class CadastroModuloController extends CadastroController {
 	private static final Logger LOGGER = Logger.getLogger(CadastroModuloController.class.getName());
 
-	// Componentes interface foram para 'CasdatroController'
+	// Componentes interface foram para 'CadastroController'
 
 	// componentes da interface de entrada de dados
-	@FXML
-	private GridPane gpDados;
-	@FXML
-	private TextField txfNome;
-	@FXML
-	private TextField txfDuração;
-	@FXML
-	private DatePicker dpkInício;
-	@FXML
-	private ComboBox<InstrutorFXBean> cbxInstrutor;
+	@FXML	private GridPane gpDados;
+	@FXML	private TextField txfNome;
+	@FXML	private TextField txfDuração;
+	@FXML	private DatePicker dpkInício;
+	@FXML	private ComboBox<InstrutorFXBean> cbxInstrutor;
 
 	private ScreenManager screenManager;
 	private JpaService jpaService;
@@ -92,26 +87,6 @@ public class CadastroModuloController extends CadastroController {
 	// template CadastroController
 	// received 'this' because in this class extends 'CadastroController'
 	CadastroController cc = this;
-
-	@FXML
-	private void onMenuButtonBarAction(ActionEvent ev) {
-		Object component = ev.getSource();
-
-		if (component == cc.getBtnIncluir() || component == cc.getBtnIncluir())
-			cc.insert();
-		else if (component == cc.getMiAlterar() || component == cc.getBtnAlterar())
-			cc.update();
-		else if (component == cc.getMiExcluir() || component == cc.getBtnExcluir())
-			cc.delete();
-		else if (component == cc.getMiSalvar() || component == cc.getBtnSalvar())
-			cc.save();
-		else if (component == cc.getMiCancelar() || component == cc.getBtnCancelar())
-			cc.cancel();
-		else if (component == cc.getMiProcurar() || component == cc.getBtnProcurar())
-			cc.search();
-		else if (component == cc.getMiSair())
-			cc.exit();
-	}
 
 	public void initState(ScreenManager screenManager, JpaService jpaService) {
 		initState(DataEntryState.INIT, screenManager, jpaService);
@@ -195,20 +170,12 @@ public class CadastroModuloController extends CadastroController {
 
 	@Override
 	public void doInsert() {
-		// VALIDAR OS DADOS
-		// SE DADOS VÁLIDOS
-		// ENTÃO INCLUIR
-		// SENÃO ;
-		// FIM-SE
+
 	}
 
 	@Override
 	public void doUpdate() {
-		// VALIDAR OS DADOS
-		// SE DADOS VÁLIDOS
-		// ENTÃO ALTERAR
-		// SENÃO ;
-		// FIM-SE
+
 	}
 
 	@Override

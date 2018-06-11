@@ -68,8 +68,6 @@ public class CadastroCursoController extends CadastroController {
 	private static final List<String> CURSO_SITUACOES = Arrays.asList(CursoSituacaoType.ABERTO.toString(),
 			CursoSituacaoType.ANDAMENTO.toString(), CursoSituacaoType.ENCERRADO.toString(),
 			CursoSituacaoType.CANCELADO.toString());
-
-	// Componentes interface foram para 'CasdatroController'
 	
 	@FXML	private GridPane gpDados;
 	@FXML	private TextField txfCodigo;
@@ -139,7 +137,6 @@ public class CadastroCursoController extends CadastroController {
 		} else if (btn == btnProcurarModulo) {
 			;
 		} else if (btn == btnSelecionarTodosModulo) {
-			// SelectionMode = MULTIPLE
 			tvwModulos.getSelectionModel().selectAll();
 			tvwModulos.requestFocus();
 		} else if (btn == btnLimparSelecaoModulo)
@@ -156,7 +153,7 @@ public class CadastroCursoController extends CadastroController {
 
 		fxbCurso = new CursoFXBean();
 		lastFXBCurso = new CursoFXBean();
-		// deixa a UI em estado inicial
+
 		changeState(DataEntryState.INIT);
 
 		dataEntryActiveProperty = new SimpleBooleanProperty(false);
@@ -167,19 +164,10 @@ public class CadastroCursoController extends CadastroController {
 
 		initBindingDataEntry();
 		initBindingModulos();
-
-		// DESCOMENTAR PARA TESTAR "PROCURAR"
-		// Platform.runLater(new Runnable() {
-		// @Override
-		// public void run() {
-		// miProcurar.disableProperty().set(false);
-		// miProcurar.fire();
-		// }
-		// });
 	}
 
 	private void init() {
-		clearData();
+		doClearData();
 
 		dataEntryActiveProperty.set(false);
 		dataEntryInsertingProperty.set(false);
@@ -220,7 +208,7 @@ public class CadastroCursoController extends CadastroController {
 		}
 
 		changeState(DataEntryState.VIEW);
-		viewFocus();
+		doViewFocus();
 	}
 	
 	@Override
@@ -233,7 +221,7 @@ public class CadastroCursoController extends CadastroController {
 				// COPIAR 'lastFXBCurso' PARA 'fxbCurso'
 				copy(fxbCurso, lastFXBCurso);
 				changeState(DataEntryState.VIEW);
-				viewFocus();
+				doViewFocus();
 			}
 		}
 	}
@@ -252,7 +240,7 @@ public class CadastroCursoController extends CadastroController {
 			// COPIAR 'fxbCurso' PARA 'lastFXBCurso'
 			copy(lastFXBCurso, fxbCurso);
 
-			viewFocus();
+			doViewFocus();
 			changeState(DataEntryState.VIEW);
 		}
 	}
@@ -273,7 +261,7 @@ public class CadastroCursoController extends CadastroController {
 
 	@Override
 	public void doInsertFocus() {
-		clearData();
+		doClearData();
 
 		dataEntryActiveProperty.set(true);
 		dataEntryInsertingProperty.set(true);
@@ -289,7 +277,7 @@ public class CadastroCursoController extends CadastroController {
 
 	@Override
 	public void doUpdateFocus() {
-		showData();
+		doShowData();
 
 		dataEntryActiveProperty.set(true);
 		dataEntryInsertingProperty.set(false);

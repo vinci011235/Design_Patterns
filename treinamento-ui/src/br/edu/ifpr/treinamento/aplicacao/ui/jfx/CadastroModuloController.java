@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
-import java.util.logging.Logger;
 
 import br.edu.ifpr.treinamento.aplicacao.ui.gui.jfx.utils.ScreenManager;
 import br.edu.ifpr.treinamento.fxbeans.InstrutorFXBean;
@@ -17,13 +15,12 @@ import br.edu.ifpr.treinamento.modelo.Modulo;
 import br.edu.ifpr.treinamento.modelo.service.JpaService;
 import br.edu.ifpr.treinamento.modelo.service.command.JpaPersistenceDAOType;
 import br.edu.ifpr.treinamento.modelo.service.command.impl.InstrutorPersistenceDAO;
-import br.edu.ifpr.treinamento.modelo.service.command.impl.ModuloPersistenceDAO;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -35,20 +32,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 import patterns.strategy.DataEntryState;
 import patterns.template.CadastroController;
 
 public class CadastroModuloController extends CadastroController {
-	private static final Logger LOGGER = Logger.getLogger(CadastroModuloController.class.getName());
-
-	// Componentes interface foram para 'CadastroController'
-
-	// componentes da interface de entrada de dados
 	@FXML	private GridPane gpDados;
 	@FXML	private TextField txfNome;
 	@FXML	private TextField txfDuração;
@@ -56,30 +46,19 @@ public class CadastroModuloController extends CadastroController {
 	@FXML	private ComboBox<InstrutorFXBean> cbxInstrutor;
 
 	private ScreenManager screenManager;
-	private JpaService jpaService;
-	private ModuloPersistenceDAO moduloDao;
 	private InstrutorPersistenceDAO instrutorDao;
 
 	private ModuloFXBean fxbModulo;
 	private Modulo modulo;
-	// usada somente quando o botão "Incluir" é clicado, pois o sistema precisa
-	// saber se o estado anterior era 'INIT' ou 'VIEW'
+
 	private ModuloFXBean lastFXBModulo;
 
 	private List<InstrutorFXBean> fxbInstrutores;
 
-	// INCLUSÃO OU ALTERAÇÃO: true; VISUALIZAR: false
 	private BooleanProperty dataEntryActiveProperty;
-	// INCLUSÃO: true; ALTERAÇÃO: false
 	private BooleanProperty dataEntryInsertingProperty;
-
-	// esta propriedade indica como esta janela de entrada de dados foi invocada:
-	// true: direta (de um menu principal, por exemplo)
-	// false: indireta (da janela de entrada de dados de Curso)
 	private BooleanProperty direta;
 
-	// estado para botões/menus quando a janela de entrada de dados é iniciada
-	// a partir da janela de entrada de dados de Curso, caso contrário 'null'
 	private DataEntryState lastState;
 	private DataEntryState state;
 	private Node lastFocused;
@@ -97,7 +76,6 @@ public class CadastroModuloController extends CadastroController {
 		this.state = state;
 		this.lastFocused = null;
 		this.screenManager = screenManager;
-		this.jpaService = jpaService;
 		this.instrutorDao = (InstrutorPersistenceDAO) jpaService
 				.persistenceCommandFactory(JpaPersistenceDAOType.INSTRUTOR);
 
@@ -116,13 +94,12 @@ public class CadastroModuloController extends CadastroController {
 
 		changeState(state);
 
-		// alinha a entrada de dados da duração para a direita
 		txfDuração.setAlignment(Pos.CENTER_RIGHT);
 		init();
 	}
 
 	private void init() {
-		clearData();
+		doClearData();
 
 		dataEntryActiveProperty.set(false);
 		dataEntryInsertingProperty.set(false);
@@ -134,28 +111,20 @@ public class CadastroModuloController extends CadastroController {
 
 
 	private void initBindingDataEntry() {
-		// habilitar GridPane SOMENTE se entrada de dados habilitada (INCLUSÃO ou
-		// ALTERAÇÃO)
 		gpDados.disableProperty().bind(dataEntryActiveProperty.not());
 
 		txfNome.textProperty().bindBidirectional(fxbModulo.nomeProperty());
 		Bindings.bindBidirectional(txfDuração.textProperty(), fxbModulo.duracaoProperty(), new IntegerConverterFX());
 		dpkInício.valueProperty().bindBidirectional(fxbModulo.inicioProperty());
 		Bindings.bindBidirectional(cbxInstrutor.valueProperty(),
-				fxbModulo.instrutorProperty()/*
-												 * , new InstrutorConverterFX()
-												 */);
+				fxbModulo.instrutorProperty());
+		
 		initBindingInstrutores();
 	}
 
 	private void initBindingInstrutores() {
-		// acrescenta os dados ao ComboBox
 		cbxInstrutor.itemsProperty().get().addAll(fxbInstrutores);
-		// responsável por "renderizar" (mostrar) um item (ListCell) na lista
-		// do ComboBox e a seleção (área do "button") feita pelo usuário
 		cbxInstrutor.buttonCellProperty().set(new InstrutorComboBoxListCell());
-		// responsável por "renderizar" (mostrar) o conteúdo (lista - ListView
-		// do ComboBox
 		cbxInstrutor.cellFactoryProperty().set(new InstrutorComboBoxCallback());
 	}
 
@@ -180,15 +149,9 @@ public class CadastroModuloController extends CadastroController {
 
 	@Override
 	public void doDelete() {
-		// SE DEVE EXCLUIR
-		// ENTÃO PROCESSAR EXCLUSÃO DE DADOS
-		// FIM-SE
 		if (showAlert(AlertType.CONFIRMATION, "Pedido de Exclusão", "Deseja realmente excluir os dados???")) {
-			// EXCLUIR DADOS
-			String key = modulo.getNome();
-			// int deleted = moduloDao.delete(key);
-			// LIMPAR ENTRADA DE DADOS
-			// ALTERAR ESTADO "INICIAL" (os dados são "limpos" aqui)
+			//String key = modulo.getNome();
+
 			init();
 			changeState(DataEntryState.INIT);
 		}
@@ -197,8 +160,6 @@ public class CadastroModuloController extends CadastroController {
 	@Override
 	public void doSave() {
 		boolean dadosValidos = true;
-		// VALIDAR ENTRADA DE DADOS
-		// SE DADOS NÃO VÁLIDOS
 		if (dadosValidos) {
 			// ModuloEntityConverter conv = new ModuloEntityConverter();
 			//
@@ -210,13 +171,7 @@ public class CadastroModuloController extends CadastroController {
 			if (!direta.get())
 				screenManager.previous();
 		} else {
-			// SENÃO PROCESSAR DADOS
-			// SE ESTÁ INCLUINDO
-			// ENTÃO LIMPAR ENTRADA DE DADOS
-			// ALTERAR ESTADO "INICIAL"
-			// SENÃO ALTERAR ESTADO "VISUALIZAÇÃO"
-			// FIM-SE
-			// FIM-SE
+
 		}
 		// if (state == DataEntryState.INSERT) {
 		// changeState(DataEntryState.INIT);
@@ -225,17 +180,12 @@ public class CadastroModuloController extends CadastroController {
 		// }
 		// else {
 		changeState(DataEntryState.VIEW);
-		viewFocus();
+		doViewFocus();
 		// }
 	}
 
 	@Override
 	public void doCancel() {
-		// SE CANCELAR OPERAÇÃO
-		// ENTÃO LIMPAR ENTRADA DE DADOS
-		// ALTERAR ESTADO "INICIAL"
-		// SENÃO ALTERAR ESTADO "VISUALIZAÇÃO"
-		// FIM-SE
 		if (showAlert(AlertType.CONFIRMATION, "Pedido de Cancelamento", "Deseja realmente cancelar a operação?")) {
 			if (!direta.get())
 				screenManager.previous();
@@ -244,10 +194,9 @@ public class CadastroModuloController extends CadastroController {
 					changeState(DataEntryState.INIT);
 					init();
 				} else {
-					// COPIAR 'lastFXBCurso' PARA 'fxbCurso'
 					copy(fxbModulo, lastFXBModulo);
 					changeState(DataEntryState.VIEW);
-					viewFocus();
+					doViewFocus();
 				}
 			}
 		}
@@ -255,41 +204,31 @@ public class CadastroModuloController extends CadastroController {
 
 	@Override
 	public void doFind() {
-		final String CURSOS[] = { "AAA", "BBB", "CCC", "DDD", "EEE" };
-		Random r = new Random();
-		String codigo = CURSOS[r.nextInt(CURSOS.length)];
-		// ENTRAR NO MODO DE BUSCA
-		// ALTERAR ESTADO "VISUALIZAÇÃO"
-		// modulo = moduloDao.select(codigo);
-		if (modulo != null) {
-			// fromEntity();
+		//final String CURSOS[] = { "AAA", "BBB", "CCC", "DDD", "EEE" };
+		//Random r = new Random();
+		//String codigo = CURSOS[r.nextInt(CURSOS.length)];
 
-			// COPIAR 'fxbCurso' PARA 'lastFXBCurso'
+		if (modulo != null) {
 			copy(lastFXBModulo, fxbModulo);
 
-			viewFocus();
+			doViewFocus();
 			changeState(DataEntryState.VIEW);
 		}
 	}
 
 	@Override
 	public void doExit() {
-		// SE HOUVER EDIÇÃO PENDENTE
-		// ENTÃO SE CANCELAR EDIÇÃO
 		if (showAlert(AlertType.CONFIRMATION, "Pedido de Fechamento", "Deseja realmente Sair?"))
 			screenManager.previous();
-		// ENTÃO SAIR
-		// FIM-SE
-		// FIM-SE
 	}
 	
 	@Override
 	public void doInsertFocus() {
-		clearData();
+		doClearData();
 
 		dataEntryActiveProperty.set(true);
 		dataEntryInsertingProperty.set(true);
-		// o foco deve ir ao primeiro componente gráfico para entrada de dados
+
 		txfNome.requestFocus();
 	}
 
@@ -301,12 +240,10 @@ public class CadastroModuloController extends CadastroController {
 
 	@Override
 	public void doUpdateFocus() {
-		showData();
+		doShowData();
 
 		dataEntryActiveProperty.set(true);
 		dataEntryInsertingProperty.set(false);
-		// o foco deve ir ao primeiro componente gráfico que não descreva o(s)
-		// identificador(es) dos dados exibidos
 		txfNome.requestFocus();
 	}
 
@@ -317,13 +254,10 @@ public class CadastroModuloController extends CadastroController {
 
 	@Override
 	public void doClearData() {
-		// limpar o campo do nome
 		txfNome.clear();
-		// limpa o campo da duração com 0 (zero)
 		txfDuração.textProperty().set("0");
-		// limpar o campo início com a data atual
 		dpkInício.valueProperty().set(LocalDate.now());
-		// limpa a seleção do ComboBox
+
 		cbxInstrutor.selectionModelProperty().get().clearSelection();
 	}
 
@@ -359,37 +293,12 @@ public class CadastroModuloController extends CadastroController {
 		alert.headerTextProperty().set(header);
 		alert.contentTextProperty().set(content);
 
-		// mudar o botão padrão
-		// 1:
-		// Deactivate Defaultbehavior for yes-Button:
 		Button button = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
 		button.setDefaultButton(false);
 
-		// Activate Defaultbehavior for no-Button:
 		button = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
 		button.setDefaultButton(true);
 
-		// 2:
-		// ButtonBar buttonBar =
-		// (ButtonBar) alert.getDialogPane().lookup(".button-bar");
-		// buttonBar.setButtonOrder(ButtonBar.BUTTON_ORDER_NONE);
-
-		// impedir que o diálogo seja fechado até estar "pronto"
-		// final Button btOk =
-		// (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
-		//
-		// btOk.addEventFilter(ActionEvent.ACTION,new EventHandler<ActionEvent> () {
-		// @Override
-		// public void handle(ActionEvent ev) {
-		// if (false/*ALGUM PROCESSAMENTO É FALSO*/)
-		// ev.consume();
-		// }
-		// });
-		/*
-		 * (event) -> { if (!validateAndStore()) { event.consume(); } });
-		 */
-
-		// Optional<ButtonType> result = alert.showAndWait();
 		ButtonType btn = alert.showAndWait().get();
 
 		if (btn == ButtonType.CANCEL)
@@ -405,38 +314,10 @@ public class CadastroModuloController extends CadastroController {
 	private class FocusPropertyChangeListener implements ChangeListener<Node> {
 		@Override
 		public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
-			// System.out.println("ObservableValue " + observable);
-			// System.out.println(" oldValue " + oldValue);
-			// System.out.println(" newValue " + newValue);
 			lastFocused = oldValue;
 		}
 	}
 
-	private class InstrutorConverterFX extends StringConverter<InstrutorFXBean> {
-		@Override
-		public String toString(InstrutorFXBean object) {
-			if (object == null)
-				return null;
-			// o valor retornado aqui está com concordância com o valor retornardo
-			// pelo "else" em InstrutorComboBoxListCell.updateItem() (abaixo)
-			return object.nomeProperty().get();
-		}
-
-		@Override
-		public InstrutorFXBean fromString(String string) {
-			if (string == null || string.isEmpty())
-				return null;
-
-			for (InstrutorFXBean fxbInstrutor : fxbInstrutores)
-				if (fxbInstrutor.nomeProperty().equals(string))
-					return fxbInstrutor;
-
-			return null;
-		}
-	}
-
-	// classe responsável por retornar as informações a serem exibidas na lista
-	// (ListVew) do ComboBox
 	private class InstrutorComboBoxCallback implements Callback<ListView<InstrutorFXBean>, ListCell<InstrutorFXBean>> {
 		@Override
 		public ListCell<InstrutorFXBean> call(ListView<InstrutorFXBean> param) {
@@ -444,8 +325,6 @@ public class CadastroModuloController extends CadastroController {
 		}
 	}
 
-	// classe responsável por retornar uma informação a ser exibida (ListCell)
-	// na lista (ListVew) do ComboBox
 	private class InstrutorComboBoxListCell extends ListCell<InstrutorFXBean> {
 		@Override
 		public void updateItem(InstrutorFXBean item, boolean empty) {
@@ -453,13 +332,8 @@ public class CadastroModuloController extends CadastroController {
 
 			if (item == null)
 				textProperty().set(null);
-			// o valor retornado aqui está com concordância com o valor retornardo
-			// por InstrutorConverterFX.toString() (acima)
 			else
 				textProperty().set(item.nomeProperty().get());
 		}
 	}
-	// ==========================================================================
-	// === CLASSES DE SUPORTE - FIM =============================================
-	// ==========================================================================
 }

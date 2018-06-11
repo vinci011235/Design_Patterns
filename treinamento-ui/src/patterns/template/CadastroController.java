@@ -1,15 +1,11 @@
 package patterns.template;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 
 public abstract class CadastroController {
-
-	// Pattern 'Template' to class 'CadastroCursoController' and
-	// 'CadastroModuloController'
 	@FXML	private MenuItem miIncluir;
 	@FXML	private MenuItem miAlterar;
 	@FXML	private MenuItem miExcluir;
@@ -26,6 +22,49 @@ public abstract class CadastroController {
 	@FXML	private Button btnProcurar;
 
 	public CadastroController() {
+		//initComponents();
+	}
+	
+	public void initComponents() {
+		miIncluir.setOnAction(e -> {
+			doInsert();
+		});
+		btnIncluir.setOnAction(e -> {
+			doInsert();
+		});
+		miAlterar.setOnAction(e -> {
+			doUpdate();
+		});
+		btnAlterar.setOnAction(e -> {
+			doUpdate();
+		});
+		miExcluir.setOnAction(e -> {
+			doDelete();
+		});
+		btnExcluir.setOnAction(e -> {
+			doDelete();
+		});
+		miSalvar.setOnAction(e -> {
+			doSave();
+		});
+		btnSalvar.setOnAction(e -> {
+			doSave();
+		});
+		miCancelar.setOnAction(e -> {
+			doCancel();
+		});
+		btnCancelar.setOnAction(e -> {
+			doCancel();
+		});
+		miProcurar.setOnAction(e -> {
+			doFind();
+		});
+		btnProcurar.setOnAction(e -> {
+			doFind();
+		});
+		miSair.setOnAction(e -> {
+			doExit();
+		});
 	}
 	
 	@FXML
@@ -33,67 +72,19 @@ public abstract class CadastroController {
 		Object component = ev.getSource();
 
 		if (component == miIncluir || component == btnIncluir)
-			insert();
+			doInsert();
 		else if (component == miAlterar || component == btnAlterar)
-			update();
+			doUpdate();
 		else if (component == miExcluir || component == btnExcluir)
-			delete();
+			doDelete();
 		else if (component == miSalvar || component == btnSalvar)
-			save();
+			doSave();
 		else if (component == miCancelar || component == btnCancelar)
-			cancel();
+			doCancel();
 		else if (component == miProcurar || component == btnProcurar)
-			search();
+			doFind();
 		else if (component == miSair)
-			exit();
-	}
-
-	public void insert() {
-		doInsert();
-	}
-
-	public void update() {
-		doUpdate();
-	}
-
-	public void delete() {
-		doDelete();
-	}
-
-	public void save() {
-		doSave();
-	}
-
-	public void cancel() {
-		doCancel();
-	}
-
-	public void search() {
-		doFind();
-	}
-
-	public void exit() {
-		doExit();
-	}
-	public void insertFocus() {
-		doInsertFocus();
-	}
-	
-	public void viewFocus() {
-		doViewFocus();
-	}
-	
-	public void updateFocus() {
-		doShowData();
-		doUpdateFocus();
-	}
-	
-	public void showData() {
-		doShowData();
-	}
-	
-	public void clearData() {
-		doClearData();
+			doExit();
 	}
 
 	public abstract void doInsert();
@@ -120,7 +111,6 @@ public abstract class CadastroController {
 	
 	public abstract void doClearData();
 
-	// Bindings agora realizados por metodos gets da classe 'CadastroController'
 	public void initBindings() {
 		btnIncluir.disableProperty().bind(miIncluir.disableProperty());
 		btnAlterar.disableProperty().bind(miAlterar.disableProperty());
@@ -158,7 +148,7 @@ public abstract class CadastroController {
 		miCancelar.disableProperty().set(false);
 		miProcurar.disableProperty().set(true);
 		// ajusta a interface para inclusão
-		insertFocus();
+		doInsertFocus();
 	}
 
 	public void changeStateUpdate() {
@@ -169,11 +159,10 @@ public abstract class CadastroController {
 		miCancelar.disableProperty().set(false);
 		miProcurar.disableProperty().set(false);
 		// ajusta a entrada de dados para alteração
-		updateFocus();
+		doUpdateFocus();
 	}
 
 	public void changeStateDelete() {
-		// menu
 		miIncluir.disableProperty().set(true);
 		miAlterar.disableProperty().set(true);
 		miExcluir.disableProperty().set(false);

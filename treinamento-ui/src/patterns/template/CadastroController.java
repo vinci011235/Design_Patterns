@@ -20,10 +20,6 @@ public abstract class CadastroController {
 	@FXML	private Button btnSalvar;
 	@FXML	private Button btnCancelar;
 	@FXML	private Button btnProcurar;
-
-	public CadastroController() {
-		//initComponents();
-	}
 	
 	public void initComponents() {
 		miIncluir.setOnAction(e -> {
@@ -69,22 +65,7 @@ public abstract class CadastroController {
 	
 	@FXML
 	private void onMenuButtonBarAction(ActionEvent ev) {
-		Object component = ev.getSource();
-
-		if (component == miIncluir || component == btnIncluir)
-			doInsert();
-		else if (component == miAlterar || component == btnAlterar)
-			doUpdate();
-		else if (component == miExcluir || component == btnExcluir)
-			doDelete();
-		else if (component == miSalvar || component == btnSalvar)
-			doSave();
-		else if (component == miCancelar || component == btnCancelar)
-			doCancel();
-		else if (component == miProcurar || component == btnProcurar)
-			doFind();
-		else if (component == miSair)
-			doExit();
+		initComponents();
 	}
 
 	public abstract void doInsert();

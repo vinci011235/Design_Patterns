@@ -491,19 +491,10 @@ public class CadastroCursoController extends CadastroController {
 	}
 
 	private void initBindingDataEntry() {
-		// habilitar GridPane SOMENTE se entrada de dados habilitada (INCLUSÃO ou
-		// ALTERAÇÃO)
 		gpDados.disableProperty().bind(dataEntryActiveProperty.not());
 		// vincula TextField <-> objeto do modelo
 		txfCodigo.textProperty().bindBidirectional(fxbCurso.codigoProperty());
-		// habilitar entrada de dados para o(s) campo(s) que identifica(m) os
-		// dados SOMENTE se INCLUSÃO
 		txfCodigo.disableProperty().bind(dataEntryInsertingProperty.not());
-
-		// se o código do fxbCurso aceitar somente valores numéricos descomentar
-		// a linha a seguir
-		// txfCodigo.textFormatterProperty().set(
-		// new TextFormatter<>(new IntegerFilter()));
 		txfCodigo.textProperty().addListener(new CodigoChangeListener());
 
 		// vincula TextField <-> objeto do modelo
@@ -513,19 +504,12 @@ public class CadastroCursoController extends CadastroController {
 		// vincula TextField <-> objeto do modelo
 		Bindings.bindBidirectional(chbSituacao.valueProperty(), fxbCurso.situacaoProperty(),
 				new CursoSituacaoConverter());
-		// VINCULAR o atributo "duracao" ???
 
-		// vincula TextField <-> objeto do modelo
 		dpkInicio.valueProperty().bindBidirectional(fxbCurso.inicioProperty());
 		dpkInicio.valueProperty().addListener(new InicioChangeListener());
-		// descomentar a linha a seguir para restringir datas menores que a data
-		// atual
-		// dpkInicio.dayCellFactoryProperty().set(new RestrictDaysCallback());
 
-		// vincula TextField <-> objeto do modelo
 		tvwModulos.itemsProperty().bindBidirectional(fxbCurso.modulosProperty());
-		// indica para cada coluna a qual o atributo do objeto do modelo está
-		// vinculado
+
 		tclInicio.cellValueFactoryProperty().set(new PropertyValueFactory<ModuloFXBean, LocalDate>("inicio"));
 		tclInicio.cellFactoryProperty().set(new InicioFormatterCallback());
 
@@ -538,12 +522,9 @@ public class CadastroCursoController extends CadastroController {
 		tvwModulos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		// habilitar grid somente se INCLUSÃO ou ALTERAÇÃO
 		tvwModulos.disableProperty().bind(gpDados.disableProperty());
-		// habilitar INCLUSÃO de dados detalhes SOMENTE se entrada de dados
-		// habilitada
+
 		btnIncluirModulo.disableProperty().bind(gpDados.disableProperty());
-		// habilitar botões de alterar, excluir, procurar, selecionar tudo e
-		// limpar seleção SOMENTE se entrada de dados estiver habilitada E houver
-		// dados no TableView
+
 		ObservableList<ModuloFXBean> items = tvwModulos.itemsProperty().get();
 
 		BooleanBinding disableIfEmpty = gpDados.disableProperty().or(Bindings.size(items).isEqualTo(0));

@@ -6,57 +6,69 @@ import java.util.logging.Logger;
 
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import patterns.iterator.IteratorScreenManager;
 
-public class ScreenManager {
-   private static final Logger LOGGER =
-                                 Logger.getLogger(ScreenManager.class.getName());
+public class ScreenManager implements IteratorScreenManager {
+	private static final Logger LOGGER = Logger.getLogger(ScreenManager.class.getName());
 
-   private Stage                  stage;
-   private List<ScreenDefinition> roots;
-   private int                    index;
+	private Stage stage;
+	private List<ScreenDefinition> roots;
+	private int index;
 
-   public ScreenManager(Stage stage) {
-      this.stage = stage;
-      this.roots = new ArrayList<>();
-      this.index = -1;
-   }
+	public ScreenManager(Stage stage) {
+		this.stage = stage;
+		this.roots = new ArrayList<>();
+		this.index = -1;
+	}
 
-   public Stage getStage() { return this.stage; }
+	public Stage getStage() {
+		return this.stage;
+	}
 
-   public void add(Parent parent) {
-      roots.add(new ScreenDefinition(parent));
-      ++index;
-   }
+	public void add(Parent parent) {
+		roots.add(new ScreenDefinition(parent));
+		++index;
+	}
+	@Override
+	public ScreenDefinition next() {
+		if (!hasNext())
+			throw new IllegalStateException("next(): Não há 'scene' disponível");
+		
+		ScreenDefinition sceneDefinition = roots.get(index);
+		
+		stage.getScene().setRoot(sceneDefinition.getParent());
+		stage.sizeToScene();
+		return sceneDefinition;
+	}
 
-   public void next() {
-      if (index > roots.size())
-         throw new IllegalStateException("next(): Não há 'scene' disponível");
+	@Override
+	public boolean hasNext() {
+		return index > roots.size();
+	}
 
-      ScreenDefinition sceneDefinition = roots.get(index);
+	public void previous() {
+		if (index < 0)
+			throw new IllegalStateException("previous(): Não há 'scene' disponível");
 
-      stage.getScene().setRoot(sceneDefinition.getParent());
-      stage.sizeToScene();
-   }
+		ScreenDefinition sceneDefinition = roots.get(index);
+		--index;
 
-   public void previous() {
-      if (index < 0)
-         throw new IllegalStateException("previous(): Não há 'scene' disponível");
+		stage.getScene().setRoot(sceneDefinition.getParent());
+		stage.sizeToScene();
 
-      ScreenDefinition sceneDefinition = roots.get(index);
-      --index;
+	}
 
-      stage.getScene().setRoot(sceneDefinition.getParent());
-      stage.sizeToScene();
 
-   }
 }
 
 class ScreenDefinition {
-   private Parent parent;
+	private Parent parent;
 
-   public ScreenDefinition(Parent parent) {
-      this.parent = parent;
-   }
+	public ScreenDefinition(Parent parent) {
+		this.parent = parent;
+	}
 
-   public Parent getParent() { return this.parent; }
+	public Parent getParent() {
+		return this.parent;
+	}
 }

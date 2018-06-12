@@ -54,6 +54,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import patterns.command.Command;
+import patterns.command.factory.CommandFactory;
+import patterns.command.factory.CommandFactoryProperties;
 import patterns.state.DataEntryState;
 import patterns.template.CadastroController;
 
@@ -105,40 +108,12 @@ public class CadastroCursoController extends CadastroController {
 	
 	@FXML
 	private void onModulosButtonAction(ActionEvent ev) throws IOException {
-		Button btn = (Button) ev.getSource();
-
-		if (btn == btnIncluirModulo) {
-			sceneManager.add(sceneManager.getStage().getScene().getRoot());
-
-			BorderPane root = null;
-			Scene scene = sceneManager.getStage().getScene();
-			String url = FXML_PATH_NAME + CADASTRO_MÓDULO_FXML;
-			URL fxmlFile = getClass().getResource(url);
-			FXMLLoader loader = new FXMLLoader(fxmlFile);
-
-			root = loader.load();
-			CadastroModuloController controller = loader.getController();
-
-			controller.initState(DataEntryState.INSERT, sceneManager, jpaService);
-			scene.focusOwnerProperty().addListener(controller.getFocusPropertyChangeListener());
-			if (root == null) {
-				sceneManager.previous();
-				return;
-			}
-
-			scene.setRoot(root);
-			sceneManager.getStage().sizeToScene();
-		} else if (btn == btnAlterarModulo) {
-			;
-		} else if (btn == btnExcluirModulo) {
-			;
-		} else if (btn == btnProcurarModulo) {
-			;
-		} else if (btn == btnSelecionarTodosModulo) {
-			tvwModulos.getSelectionModel().selectAll();
-			tvwModulos.requestFocus();
-		} else if (btn == btnLimparSelecaoModulo)
-			tvwModulos.getSelectionModel().clearSelection();
+		btnIncluirModulo.setUserData(CommandFactory.INCLUIR_MODULO);
+		btnAlterarModulo.setUserData(CommandFactory.ALTERAR_MODULO);
+		btnExcluirModulo.setUserData(CommandFactory.EXCLUIR_MODULO);
+		btnProcurarModulo.setUserData(CommandFactory.PROCURAR_MODULO);
+		btnSelecionarTodosModulo.setUserData(CommandFactory.SELECIONAR_TODOS);
+		btnLimparSelecaoModulo.setUserData(CommandFactory.LIMPAR_SELECAO);
 	}
 
 	public void initState(ScreenManager sceneManager, JpaService jpaService) {

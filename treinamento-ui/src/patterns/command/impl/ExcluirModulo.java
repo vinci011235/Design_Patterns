@@ -2,7 +2,7 @@ package patterns.command.impl;
 
 import patterns.command.Command;
 
-public class ExcluirModulo implements Command {
+public abstract class ExcluirModulo implements Command {
 
 	@Override
 	public void execute() {

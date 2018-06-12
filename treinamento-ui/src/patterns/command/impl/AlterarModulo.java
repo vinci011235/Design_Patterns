@@ -2,7 +2,7 @@ package patterns.command.impl;
 
 import patterns.command.Command;
 
-public class AlterarModulo implements Command {
+public abstract class AlterarModulo implements Command {
 
 	@Override
 	public void execute() {

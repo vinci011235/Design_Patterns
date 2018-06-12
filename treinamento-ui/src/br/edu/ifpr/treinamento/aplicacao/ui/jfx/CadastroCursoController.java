@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import br.edu.ifpr.treinamento.aplicacao.ui.gui.jfx.utils.ScreenManager;
 import br.edu.ifpr.treinamento.fxbeans.CursoFXBean;
@@ -45,7 +44,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -56,7 +54,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import patterns.strategy.DataEntryState;
+import patterns.state.DataEntryState;
 import patterns.template.CadastroController;
 
 public class CadastroCursoController extends CadastroController {

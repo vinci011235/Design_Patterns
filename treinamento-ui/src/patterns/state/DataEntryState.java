@@ -1,4 +1,4 @@
-package patterns.strategy;
+package patterns.state;
 
 import patterns.template.CadastroController;
 

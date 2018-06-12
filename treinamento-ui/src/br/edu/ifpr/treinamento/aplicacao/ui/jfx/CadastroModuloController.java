@@ -35,7 +35,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-import patterns.strategy.DataEntryState;
+import patterns.state.DataEntryState;
 import patterns.template.CadastroController;
 
 public class CadastroModuloController extends CadastroController {

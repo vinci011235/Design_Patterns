@@ -23,6 +23,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import patterns.singleton.JpaConfig;
 
 public class PrincipalController_GridImage {
 	private static final String FXML_PATH_NAME = "/br/edu/ifpr/treinamento/aplicacao/ui/jfx/";
@@ -82,7 +83,8 @@ public class PrincipalController_GridImage {
 	private String imageViewOldStyle;
 	private String labelOldStyle;
 
-	private JpaService jpaService = new JpaService();
+	//Alterado para Singleton
+	private JpaService jpaService = JpaConfig.getInstance();
 
 	private SceneKeyPressed sceneKeyPressed = new SceneKeyPressed();
 
